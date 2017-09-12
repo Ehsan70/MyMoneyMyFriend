@@ -56,8 +56,18 @@ namespace MyMoneyMyFriend
             // This will catch any unhandled exception that happens during the process of request. It shows stack trace. 
             if (env.IsDevelopment())
             {
-                // This middleware only care about the response. It's looking for unhanded exceptions that occurred somewhere else down the line.  
+                // Because this middleware is really for developers. So it should be shown in the development environment only.  
+                // This middleware only care about the response. It's looking for unhanded exceptions that occurred somewhere else down the line. This should be installed first.
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //app.UseExceptionHandler("/error"); // This will re-execute my request pipeline using this new path, so that my application can respond in a different way. 
+                app.UseExceptionHandler(new ExceptionHandlerOptions
+                {
+                    // Request Delegate is a method that takes http context as a parameter and returns a task.
+                    ExceptionHandler = context => context.Response.WriteAsync("Ops!") // This means given an http context, please evaluate the following expression.  
+                }); // This 
             }
 
             // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal piece of middle-ware i.e. when a request reaches this middleware, it will not continue to any other middleware. So the order of middlewares matter
