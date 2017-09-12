@@ -50,8 +50,10 @@ namespace MyMoneyMyFriend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline. HTTP processing pipeline is configured here. 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IGreeter greeter)
         {
+            /////////////////////// Logger Middleware /////////////////////// 
             loggerFactory.AddConsole();
 
+            /////////////////////// Exception Middleware for Production and Development /////////////////////// 
             //Developer exception page: This is only installed when we are in development mode and not in production mode.
             // This will catch any unhandled exception that happens during the process of request. It shows stack trace. 
             if (env.IsDevelopment())
@@ -70,6 +72,12 @@ namespace MyMoneyMyFriend
                 }); // This 
             }
 
+            /////////////////////// Static Files Middleware /////////////////////// 
+            // app.UseDefaultFiles(); // Look at the incoming requests and sees if there is a default file that matches that request. Default File names : Index.html, etc 
+            // app.UseStaticFiles(); // By default it will look for files on the file system in the web root folder
+            app.UseFileServer(); // his combines both of UseStaticFiles and UseDefaultFiles. You have directory browsing
+
+            /////////////////////// WelcomePage Middleware /////////////////////// 
             // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal piece of middle-ware i.e. when a request reaches this middleware, it will not continue to any other middleware. So the order of middlewares matter
             // app.UseWelcomePage("/welcome"); //"/welcome" would the path that this middleware will respond. 
             app.UseWelcomePage(new WelcomePageOptions
