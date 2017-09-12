@@ -32,6 +32,8 @@ namespace MyMoneyMyFriend
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             // IGreeting has to be registered so that ASP.NEt knows about it. 
             // Note that There are some built-in services that ASP.NEt will provide by default. In particular, the services variables will have 16 Interfaces already configured. 
             // So once a service that implements IGreeter is registered. ASP.NEt will be able to pass that along to any component that is controlled by ASP.NET that needs it.  
@@ -77,25 +79,8 @@ namespace MyMoneyMyFriend
             // app.UseStaticFiles(); // By default it will look for files on the file system in the web root folder
             app.UseFileServer(); // his combines both of UseStaticFiles and UseDefaultFiles. You have directory browsing
 
-            /////////////////////// WelcomePage Middleware /////////////////////// 
-            // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal piece of middle-ware i.e. when a request reaches this middleware, it will not continue to any other middleware. So the order of middlewares matter
-            // app.UseWelcomePage("/welcome"); //"/welcome" would the path that this middleware will respond. 
-            app.UseWelcomePage(new WelcomePageOptions
-            {
-                Path = "/welcome"
-            }); // Most of the middleware have an options object. WelcomePageOptions has only path property 
-
-            // Run is not used a lot in production applications. It is mostly used for demos and for debugging. Runs allows us to install a really low level middleware  
-            /* Run Features: 
-             * 1. It receive access to http context. So the method bellow that is setup with lambda expression is invoked for every http request. 
-             *    ASP.NET will set up an http context object for every request and passes it in to this middleware.
-             */ 
-            app.Run(async (context) =>
-            {
-                // Note that the context object will give you access to information regarding the request and response. 
-                var message = Configuration["Greeting"];
-                await context.Response.WriteAsync(greeter.GetGreeting());
-            });
+            // Bellow middleware looks for an incoming http request and tries to map that request to a method on C# class. So MVC framework will instantiate that class and invoke a method. 
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
