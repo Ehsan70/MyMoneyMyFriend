@@ -52,13 +52,29 @@ namespace MyMoneyMyFriend
         {
             loggerFactory.AddConsole();
 
+            //Developer exception page: This is only installed when we are in development mode and not in production mode.
+            // This will catch any unhandled exception that happens durring the process of request. It shows stack trace. 
             if (env.IsDevelopment())
             {
+                // This middleware only care about the response. It's looking for unhandled exceptions that occured somewhereelse down the line.  
                 app.UseDeveloperExceptionPage();
             }
 
+            // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal peice of middleware i.e. when a request reaches this middleware, it will not continue to any other middlesware. So hte order of middlewares matters
+            // app.UseWelcomePage("/welcome"); //"/welcome" would the path that this middleware will respond. 
+            app.UseWelcomePage(new WelcomePageOptions
+            {
+                Path = "/welcome"
+            }); // Most of the middleware have an options object. WelcomePageOptions has only path property 
+
+            // Run is not used alit in production applciaitons. It is mostly used for demos and for debuging. Runs allows us to insalll a really low level middleware  
+            /* Run Features: 
+             * 1. It receive access to http context. So the method bellow that is setup with lambda expression is invoked for every htttp request. 
+             *    ASP.NET will set up an http context object for every request and passes it in to this middleware.
+             */ 
             app.Run(async (context) =>
             {
+                // Note that the context object will give you access to information regarding the request and response. 
                 var message = Configuration["Greeting"];
                 await context.Response.WriteAsync(greeter.GetGreeting());
             });
