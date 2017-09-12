@@ -32,17 +32,17 @@ namespace MyMoneyMyFriend
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            // Igreeting has to be registered so that ASP.NEt knows about it. 
+            // IGreeting has to be registered so that ASP.NEt knows about it. 
             // Note that There are some built-in services that ASP.NEt will provide by default. In particular, the services variables will have 16 Interfaces already configured. 
             // So once a service that implements IGreeter is registered. ASP.NEt will be able to pass that along to any component that is controlled by ASP.NET that needs it.  
             /*
-             services.AddSingleton() : Add a single instans of the service. Everyone sees the same instance. 
-             services.AddTransient() : Add a service with a transient life time. Anytime that service is needed by a method or component, that service is reinstantiated.   
-             services.AddScoped() : Adds a service that will be scoped to HTTP request. All the components inside of a single request will see a same instance, but accross two different HTTP requests will be two different instances.  
+             services.AddSingleton() : Add a single instance of the service. Everyone sees the same instance. 
+             services.AddTransient() : Add a service with a transient life time. Anytime that service is needed by a method or component, that service is re-instantiated.   
+             services.AddScoped() : Adds a service that will be scoped to HTTP request. All the components inside of a single request will see a same instance, but across two different HTTP requests will be two different instances.  
             */
             // Since an instance of that object is available we can just pass that object. ASP.NET is smart enough to see the type of this and so matches that type to this instance.  
             services.AddSingleton(Configuration);
-            //Bellow tells ASP.NET that when ever you see IGreeter, you need to instanciate and pass in the Greeter class.  
+            //Bellow tells ASP.NET that when ever you see IGreeter, you need to instantiate and pass in the Greeter class.  
             services.AddSingleton<IGreeter, Greeter>();
             // So Greeter needs and configuration. ASP.NET realizes that Greeter needs a configuration and therefore passes Configuration instance to Greeter. 
         }
@@ -53,23 +53,23 @@ namespace MyMoneyMyFriend
             loggerFactory.AddConsole();
 
             //Developer exception page: This is only installed when we are in development mode and not in production mode.
-            // This will catch any unhandled exception that happens durring the process of request. It shows stack trace. 
+            // This will catch any unhandled exception that happens during the process of request. It shows stack trace. 
             if (env.IsDevelopment())
             {
-                // This middleware only care about the response. It's looking for unhandled exceptions that occured somewhereelse down the line.  
+                // This middleware only care about the response. It's looking for unhanded exceptions that occurred somewhere else down the line.  
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal peice of middleware i.e. when a request reaches this middleware, it will not continue to any other middlesware. So hte order of middlewares matters
+            // app.UseWelcomePage(); // When no argument is passed to the USeWelcomePage, it becomes a terminal piece of middle-ware i.e. when a request reaches this middleware, it will not continue to any other middleware. So the order of middlewares matter
             // app.UseWelcomePage("/welcome"); //"/welcome" would the path that this middleware will respond. 
             app.UseWelcomePage(new WelcomePageOptions
             {
                 Path = "/welcome"
             }); // Most of the middleware have an options object. WelcomePageOptions has only path property 
 
-            // Run is not used alit in production applciaitons. It is mostly used for demos and for debuging. Runs allows us to insalll a really low level middleware  
+            // Run is not used a lot in production applications. It is mostly used for demos and for debugging. Runs allows us to install a really low level middleware  
             /* Run Features: 
-             * 1. It receive access to http context. So the method bellow that is setup with lambda expression is invoked for every htttp request. 
+             * 1. It receive access to http context. So the method bellow that is setup with lambda expression is invoked for every http request. 
              *    ASP.NET will set up an http context object for every request and passes it in to this middleware.
              */ 
             app.Run(async (context) =>
