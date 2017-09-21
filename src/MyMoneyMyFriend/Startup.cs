@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Routing;
 
 namespace MyMoneyMyFriend
 {
@@ -79,8 +80,23 @@ namespace MyMoneyMyFriend
             // app.UseStaticFiles(); // By default it will look for files on the file system in the web root folder
             app.UseFileServer(); // his combines both of UseStaticFiles and UseDefaultFiles. You have directory browsing
 
-            // Bellow middleware looks for an incoming http request and tries to map that request to a method on C# class. So MVC framework will instantiate that class and invoke a method. 
-            app.UseMvcWithDefaultRoute();
+            //app.UseMvcWithDefaultRoute(); // Bellow middleware looks for an incoming http request and tries to map that request to a method on C# class. So MVC framework will instantiate that class and invoke a method. 
+
+
+            // Bellow will install MVC middleware but will not give any routing rules
+            app.UseMvc(ConfigureRoutes);
+
+            // If the MVC middleware doesn't find a match, it will let the request to go through the next middleware
+            app.Run(ctx => ctx.Response.WriteAsync("Not Found"));
         }
+
+        private void ConfigureRoutes(IRouteBuilder routeBuilder)
+        {
+            /////// Convention Based Routing ///////
+            // /Home/Index -> Home would be the controller , and action would be index method 
+            // If you don't find the controller in the URL use the default controller name Home and default action name Index
+            routeBuilder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+            
+         }
     }
 }
