@@ -12,6 +12,24 @@ namespace MyMoneyMyFriend.Controllers
         // Both the HomeController Class and Index function follow some conventions that MVC framework will use.
         public IActionResult Index()
         {
+
+            //// Story of a request ////
+            /*
+             This controller receives HTTP requests that get routed to this controller and this action. The goal of this method/action is to produce a result.
+             A result that represents the decision of the what to do next. In this case it's producing view. 
+             In order to produce this view, the controller action has to put together a model.
+             A model carries the information the view needs. The view doesnt have to do any hard work. All the data access is done by controller, view takes that model produces HTML
+             */
+
+            var model = new Restaurant { Id = 1, Name = "Hapa Sushi" };
+            // All the views by default will go under /views folder then name of the controller and then the action. e.g. /Views/<controller>/<action>.cshtml -> /Views/Home/Index.cshtml
+            // produces view result
+            return View(model);
+        }
+
+
+        public IActionResult IndexOld()
+        {
             // Contextual information 
             string controllerName = this.ControllerContext.ActionDescriptor.ControllerName; // Gets the controller that im inside of 
             string actionName = this.ControllerContext.ActionDescriptor.ActionName; //gets the action name for this action that is executing

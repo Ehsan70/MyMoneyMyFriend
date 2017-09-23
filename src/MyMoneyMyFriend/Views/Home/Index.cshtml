@@ -1,0 +1,15 @@
+﻿@* Bellow directive will tell Visual Studio what type model property this file uses. Essentially it'll set the type of the model property. *@
+@*If you dont pass Restaurant into this view, you'll get runtime error. *@
+@model MyMoneyMyFriend.Models.Restaurant
+
+@*The directive model will set the type of our Model. Note the casing*@
+@*The keyword Model is used to produce expressions that Razor view can evaluate to spit out data into HTML request. Note the casing*@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Home page</title>
+</head>
+<body>
+    <h1>The restaurant @Model.Name</h1>
+    <div>This Restaurant has id of @Model.Id</div>
+</body>
+</html>
