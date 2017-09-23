@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Routing;
+using MyMoneyMyFriend.Services;
 
 namespace MyMoneyMyFriend
 {
@@ -34,20 +35,14 @@ namespace MyMoneyMyFriend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-            // IGreeting has to be registered so that ASP.NEt knows about it. 
-            // Note that There are some built-in services that ASP.NEt will provide by default. In particular, the services variables will have 16 Interfaces already configured. 
-            // So once a service that implements IGreeter is registered. ASP.NEt will be able to pass that along to any component that is controlled by ASP.NET that needs it.  
-            /*
-             services.AddSingleton() : Add a single instance of the service. Everyone sees the same instance. 
-             services.AddTransient() : Add a service with a transient life time. Anytime that service is needed by a method or component, that service is re-instantiated.   
-             services.AddScoped() : Adds a service that will be scoped to HTTP request. All the components inside of a single request will see a same instance, but across two different HTTP requests will be two different instances.  
-            */
             // Since an instance of that object is available we can just pass that object. ASP.NET is smart enough to see the type of this and so matches that type to this instance.  
             services.AddSingleton(Configuration);
-            //Bellow tells ASP.NET that when ever you see IGreeter, you need to instantiate and pass in the Greeter class.  
+            // AddSinglton means there should be one instance of this class for the entire application. 
+            // So every method and component that needs an IGreeter will add this object injected.
             services.AddSingleton<IGreeter, Greeter>();
-            // So Greeter needs and configuration. ASP.NET realizes that Greeter needs a configuration and therefore passes Configuration instance to Greeter. 
+            // One instance of this service will be created for each HTTP request. 
+            // So for a single HTTP request if multiple pieces of the application need IRestaurantData, they'll see the same object. 
+            services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline. HTTP processing pipeline is configured here. 

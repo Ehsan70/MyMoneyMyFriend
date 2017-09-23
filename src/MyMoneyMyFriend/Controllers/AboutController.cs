@@ -8,7 +8,7 @@ namespace MyMoneyMyFriend.Controllers
     //[Route("[controller]/[action]")]
 
     public class AboutController
-        // Name of the Controller class always has the world controller
+    // Name of the Controller class always has the world controller
     {
         //[Route("")] // This would be a default action. If a urls with /about endpoint would reach this method 
         //[Route("phone")] // phone has to be in the URLs for this method to be called. The endpoint /about will not call this method and only /about/phone does 
