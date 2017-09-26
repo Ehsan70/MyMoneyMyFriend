@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyMoneyMyFriend.Models
+namespace MyMoneyMyFriend.Entities
 {
     public class Restaurant
     {

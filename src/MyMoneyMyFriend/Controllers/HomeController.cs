@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMoneyMyFriend.Models;
+using MyMoneyMyFriend.Entities;
 using MyMoneyMyFriend.Services;
+using MyMoneyMyFriend.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace MyMoneyMyFriend.Controllers
 {
     public class HomeController : Controller
     {
+        private IGreeter _greeter;
         private IRestaurantData _restaurantData;
 
-        public HomeController(IRestaurantData restaurantData)
+        public HomeController(IRestaurantData restaurantData, IGreeter greeter)
         {
             /*
              Controller doesnt know about the concert service that is implementing IRestaurantData. 
@@ -21,13 +23,16 @@ namespace MyMoneyMyFriend.Controllers
              Because we mapped IRestaurantData service to InMemoryRestaurantData in the startup.cs. InMemoryRestaurantData class is used.
              */
             _restaurantData = restaurantData;
+            _greeter = greeter;
         }
 
         public IActionResult Index()
         {
-            var model = _restaurantData.GetAll();
-            // All the views by default will go under /views folder then name of the controller and then the action. 
-            // e.g. /Views/<controller>/<action>.cshtml -> /Views/Home/Index.cshtml
+            var model = new HomePageViewModel();
+            model.Restaurants = _restaurantData.GetAll();
+            model.CurrentMessage = _greeter.GetGreeting();
+            // The controller has constructed the view model using two services Greeter and estaurantData
+            // The controller will take that model and pass it off to index view. 
             return View(model);
         }
     }

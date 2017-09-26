@@ -1,4 +1,4 @@
-﻿using MyMoneyMyFriend.Models;
+﻿using MyMoneyMyFriend.Entities;
 using System.Collections.Generic;
 
 namespace MyMoneyMyFriend.Services

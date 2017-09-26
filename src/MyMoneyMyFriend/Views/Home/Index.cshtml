@@ -1,7 +1,7 @@
 ﻿@* Bellow directive will tell Visual Studio what type model property this file uses. Essentially it'll set the type of the model property. *@
 @*If you dont pass Restaurant into this view, you'll get runtime error. *@
 @*This model type will be IEnumerable of Restaurant*@
-@model IEnumerable<MyMoneyMyFriend.Models.Restaurant>
+@model MyMoneyMyFriend.ViewModels.HomePageViewModel
 
 @*The directive model will set the type of our Model. Note the casing*@
 @*The keyword Model is used to produce expressions that Razor view can evaluate to spit out data into HTML request. Note the casing*@
@@ -11,12 +11,13 @@
 </head>
 <body>
     <h1>Welcome!</h1>
+    <h3>@Model.CurrentMessage</h3>
     <table border="1">
         <tr>
             <td>Id of the restaurant</td>
             <td>Name of the resaurant</td>
         </tr>
-        @foreach (var resaurant in Model)
+        @foreach (var resaurant in Model.Restaurants)
         {
             <tr>
                 <td>@resaurant.Id</td>
