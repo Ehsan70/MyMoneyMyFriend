@@ -56,10 +56,24 @@ namespace MyMoneyMyFriend.Controllers
             return View(model); 
         }
 
-
+        // Restricts this version of Create to only respond to HTTP Get request. 
+        // That is the type of the request that will be issues with the user goes to /home/create URL
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        // This should only respond to post request.
+        // That is case when user clicks the save button. 
+        [HttpPost]
+        public IActionResult Create(RestaurantEditViewModel Model)
+        {
+            var newRestaurant = new Restaurant();
+            newRestaurant.Name = Model.Name;
+            newRestaurant.Cuisine = Model.Cuisine;
+            newRestaurant = _restaurantData.Add(newRestaurant);
+            return View("Details", newRestaurant);
         }
     }
 }

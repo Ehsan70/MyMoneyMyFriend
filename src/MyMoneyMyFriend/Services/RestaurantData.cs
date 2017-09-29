@@ -9,15 +9,21 @@ namespace MyMoneyMyFriend.Services
     {
         IEnumerable<Restaurant> GetAll();
         Restaurant Get(int id);
+        /// <summary>
+        ///  Returns a restaurant and takes the new restaurant to add to the data  
+        /// </summary>
+        Restaurant Add(Restaurant newRestaurant);
     }
 
 
     public class InMemoryRestaurantData : IRestaurantData
     {
         // Note that this list collection is not thread save.
-        List<Restaurant> _restaurants;
+        // static means that there will be only one instance of this list for the entire application
+        static List<Restaurant> _restaurants;
 
-        public InMemoryRestaurantData()
+        // The constructor is static so it initializes the list of restaurant the first time we use InMemoryRestaurantData
+        static InMemoryRestaurantData()
         {
             _restaurants = new List<Restaurant>
             {
@@ -25,6 +31,15 @@ namespace MyMoneyMyFriend.Services
                 new Restaurant { Id = 2, Name = "Hapa Sushi"},
                 new Restaurant { Id = 3, Name = "Zeitoon"}
             };
+        }
+
+        public Restaurant Add(Restaurant newRestaurant)
+        {
+            // Below says find the max of Ids in the restaurant list  
+            newRestaurant.Id = _restaurants.Max(r => r.Id) + 1;
+            _restaurants.Add(newRestaurant);
+
+            return newRestaurant;
         }
 
         public Restaurant Get(int id)

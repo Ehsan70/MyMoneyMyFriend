@@ -4,6 +4,13 @@
 <h1>@Model.Name</h1>
 <div>... Details ...</div>
 <div>
+    Id: @Model.Id
+</div>
+<div>
+    Cuisine: @Model.Cuisine 
+</div>
+
+<div>
     @*The below will make sure that if the name of the method changes*@
     @Html.ActionLink("Home", nameof(HomeController.Index));
 </div>
