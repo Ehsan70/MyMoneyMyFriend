@@ -1,0 +1,33 @@
+﻿@using MyMoneyMyFriend.Entities
+@model Restaurant
+
+<div>
+    <h1>Create</h1>
+    <div>
+        @*This HTML helper return an Idisposable object. The using statement is for C# Disposable objects. *@
+        @using (Html.BeginForm())
+        {
+            // BeginForm create a form tag so <form> is called at the begining of bracket
+            <div>
+                @Html.LabelFor(m => m.Name)
+                @*The TextBoxFor will write out an input tag for me and will set various attributes like name and value according to the information that is in the model*@
+                @Html.TextBoxFor(m => m.Name)
+            </div>
+
+            <div>
+                @Html.LabelFor(m => m.Cuisine)
+                @* DropDownListFor Html helper builds an select element with options inside*@
+                @*The second argument is a select list items which are the options in the select. GetEnumSelectList takes an enum and builds a select list *@
+                @Html.DropDownListFor(m => m.Cuisine, Html.GetEnumSelectList(typeof(CuisineType)))
+            </div>
+            <div>
+                <input type="submit" value="Save!"/>
+            </div>
+            // The closing form tag which is </form> is called here.
+        } 
+
+        <form>
+
+        </form>
+    </div>
+</div>

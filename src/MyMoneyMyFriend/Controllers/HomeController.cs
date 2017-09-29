@@ -55,5 +55,11 @@ namespace MyMoneyMyFriend.Controllers
             // Returning a view with that model 
             return View(model); 
         }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
