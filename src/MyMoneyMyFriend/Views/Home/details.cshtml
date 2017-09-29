@@ -1,8 +1,10 @@
-﻿@model MyMoneyMyFriend.Entities.Restaurant
+﻿@using MyMoneyMyFriend.Controllers
+@model MyMoneyMyFriend.Entities.Restaurant
 
 <h1>@Model.Name</h1>
 <div>... Details ...</div>
 <div>
-    @Html.ActionLink("Home", "Index");
+    @*The below will make sure that if the name of the method changes*@
+    @Html.ActionLink("Home", nameof(HomeController.Index));
 </div>
 
