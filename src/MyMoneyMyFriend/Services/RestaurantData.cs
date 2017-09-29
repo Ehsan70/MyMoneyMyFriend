@@ -1,11 +1,14 @@
 ﻿using MyMoneyMyFriend.Entities;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace MyMoneyMyFriend.Services
 {
     public interface IRestaurantData
     {
         IEnumerable<Restaurant> GetAll();
+        Restaurant Get(int id);
     }
 
 
@@ -24,6 +27,12 @@ namespace MyMoneyMyFriend.Services
             };
         }
 
+        public Restaurant Get(int id)
+        {
+            // if r.Id equals id that is the restaurant I want to return 
+            // FirstOrDefault If itt doesnt find anything that matches the id it will return the default value which is a null reference. 
+            return _restaurants.FirstOrDefault(r => r.Id == id);
+        }
 
         public IEnumerable<Restaurant> GetAll()
         {

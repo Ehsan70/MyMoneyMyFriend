@@ -89,7 +89,7 @@ namespace MyMoneyMyFriend
         {
             /////// Convention Based Routing ///////
             // /Home/Index -> Home would be the controller , and action would be index method 
-            // Bellow defines templates to use againt incoming URLs. If you don't find the controller in the URL use the default controller name Home and default action name Index
+            // Bellow defines templates to use against incoming URLs. If you don't find the controller in the URL use the default controller name Home and default action name Index
             routeBuilder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             
          }

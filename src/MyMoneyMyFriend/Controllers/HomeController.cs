@@ -35,5 +35,25 @@ namespace MyMoneyMyFriend.Controllers
             // The controller will take that model and pass it off to index view. 
             return View(model);
         }
+
+        public IActionResult Details(int id)
+        {
+            // Remember our routing algorithm: routeBuilder.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+            // if something else after the action appears we will treat as a parameter named ID. 
+            // Mvc is able o find a parameter in the URL and it's gonna treat it as Id
+            //return id.ToString();
+            var model = _restaurantData.Get(id);
+            if (model == null)
+            {
+                // Bellow will return a 404  page. User should not see it though 
+                //return NotFound();
+
+                // You could redirect the user to go to another action possibly on different controller even. I this case though in the same Home controller 
+                // return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index)); // This will return the actual name of he function, in case it got changed. 
+            }
+            // Returning a view with that model 
+            return View(model); 
+        }
     }
 }

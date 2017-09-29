@@ -15,12 +15,27 @@
     <table border="1">
         <tr>
             <td>Id of the restaurant</td>
-            <td>Name of the resaurant</td>
+            <td>Details 1</td>
+            <td>Details 2</td>
+            <td>Name of the restaurant</td>
         </tr>
         @foreach (var resaurant in Model.Restaurants)
         {
             <tr>
                 <td>@resaurant.Id</td>
+                <td>
+                    <a href="/home/details/@resaurant.Id">details</a>
+                </td>
+                <td>
+                    @* You pass some params and it's going to build an anchor tag with href attribute. 
+                        ActionLink will consult with the routing rule to generate the proper link 
+                        1st Arg: The text to show to the user
+                        2ed Arg: the action which this link points to when user clicks on it. 
+                        3ed Arg: Controller name: you could skip this as Details is in the same controller 
+                        4th Arg: Details requires ID value (route value) to arrive in the URL, the route values are passed here
+                        *@
+                    @Html.ActionLink("View", "Details", "Home", new { id = resaurant.Id })
+                </td>
                 <td>@resaurant.Name</td>
             </tr>
         }
