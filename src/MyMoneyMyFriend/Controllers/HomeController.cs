@@ -73,7 +73,10 @@ namespace MyMoneyMyFriend.Controllers
             newRestaurant.Name = Model.Name;
             newRestaurant.Cuisine = Model.Cuisine;
             newRestaurant = _restaurantData.Add(newRestaurant);
-            return View("Details", newRestaurant);
+            // Telling the browser to go to some other URL and issue a get request from there.
+            // Goes to Details action of Home controller which tells the browser to issue a get request from that URL
+            // The second argument is the Route values that are passed to that Action. Bellow, would be similar to /Home/Details/4
+            return RedirectToAction("Details", new { id = newRestaurant.Id});
         }
     }
 }
