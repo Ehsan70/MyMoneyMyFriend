@@ -4,14 +4,19 @@
 <div>
     <h1>Create</h1>
     <div>
+        @*Html.ValidationSummary() // This will display all the errors associated with the model*@
         @*This HTML helper return an Idisposable object. The using statement is for C# Disposable objects. *@
         @using (Html.BeginForm())
         {
             // BeginForm create a form tag so <form> is called at the begining of bracket
             <div>
+                @*Bellow two lines is shown as:
+                    <label for="Name">Restaurant Name</label>
+                    <input class="text-box single-line password" id="Name" name="Name" type="password" value="">
+                *@
                 @Html.LabelFor(m => m.Name)
-                @*The TextBoxFor will write out an input tag for me and will set various attributes like name and value according to the information that is in the model*@
-                @Html.TextBoxFor(m => m.Name)
+                @Html.EditorFor(m=>m.Name)
+                @Html.ValidationMessageFor(m => m.Name)
             </div>
 
             <div>
@@ -19,6 +24,7 @@
                 @* DropDownListFor Html helper builds an select element with options inside*@
                 @*The second argument is a select list items which are the options in the select. GetEnumSelectList takes an enum and builds a select list *@
                 @Html.DropDownListFor(m => m.Cuisine, Html.GetEnumSelectList(typeof(CuisineType)))
+                @Html.ValidationMessageFor(m => m.Cuisine)
             </div>
             <div>
                 <input type="submit" value="Save!"/>

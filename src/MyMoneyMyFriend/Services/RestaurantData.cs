@@ -15,6 +15,45 @@ namespace MyMoneyMyFriend.Services
         Restaurant Add(Restaurant newRestaurant);
     }
 
+    public class SqlRestaurantData : IRestaurantData
+    {
+        private MyMoneyMyFriendDbContext _context;
+
+        // 
+        public SqlRestaurantData(MyMoneyMyFriendDbContext context)
+        {
+            _context = context;
+        }
+
+        public Restaurant Add(Restaurant newRestaurant)
+        { 
+            // DbContext is smart enough to figure out that this is Restaurant object and figure out which table it goes to.
+            _context.Add(newRestaurant);
+            // A better practice would be to have separate functions which would save all the 
+            // changes (in single transaction) instead of saving it for just one addition 
+            _context.SaveChanges();
+            /*
+             * Note that with the InMemoryRestaurantData, we had to generate ID ourself. But with the SQL restaurant data 
+             * SQL server will take care of generating Id, and Entity framework will grab that Id and assigning it restaurant.
+             */
+            return newRestaurant;
+        }
+
+        public Restaurant Get(int id)
+        {
+            // Select the restaurant that its id matches the incoming Id parameter. Otherwise return null.
+            return _context.Restaurants.FirstOrDefault(r => r.Id == id);
+        }
+
+        public IEnumerable<Restaurant> GetAll()
+        {
+            // Below gives back all the restaurants in the database. 
+            // The type of _context.Restaurants is DbSet<Restaurant>, which implements IEnumerable<Restaurants>
+            return _context.Restaurants;
+        } 
+    }
+
+
 
     public class InMemoryRestaurantData : IRestaurantData
     {

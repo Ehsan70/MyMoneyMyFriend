@@ -2,10 +2,6 @@
 using MyMoneyMyFriend.Entities;
 using MyMoneyMyFriend.Services;
 using MyMoneyMyFriend.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyMoneyMyFriend.Controllers
 {
@@ -67,16 +63,38 @@ namespace MyMoneyMyFriend.Controllers
         // This should only respond to post request.
         // That is case when user clicks the save button. 
         [HttpPost]
+        /*
+         <input name="__RequestVerificationToken" type="hidden" value="CfDJ8KsTxBQdYPRLtVIjIzOf5JVnlcjiUdkvzQ5zxOufyf8AdifRUjBqZ77rPtC6kbeqpiiMYqbrm_0m-MSZbk8qDoeJUWK_fuwghUamhusk1By0PxuRkCOL5e6JpQ_PoXaXJ81pOFGaDmVlCP-dbncZqSk">
+         Request verification token ensures that posted form that a user sends to us is from a form that we gave to use. Helps prevents cross site request forgery.
+         Make sure that MVC framework verifies this token against the cookie that the framework sets in the browser. This will avoid cross-Site request forgery.    
+         You should use ValidateAntiForgeryToken when use form post. 
+         */
+        [ValidateAntiForgeryToken]
         public IActionResult Create(RestaurantEditViewModel Model)
         {
-            var newRestaurant = new Restaurant();
-            newRestaurant.Name = Model.Name;
-            newRestaurant.Cuisine = Model.Cuisine;
-            newRestaurant = _restaurantData.Add(newRestaurant);
-            // Telling the browser to go to some other URL and issue a get request from there.
-            // Goes to Details action of Home controller which tells the browser to issue a get request from that URL
-            // The second argument is the Route values that are passed to that Action. Bellow, would be similar to /Home/Details/4
-            return RedirectToAction("Details", new { id = newRestaurant.Id});
+            /*
+             When MVC framework is binding to an input model, the MVC framework can apply the validation 
+             rules that are expressed by data annotation attributes and tell us if the model state is valid or not. 
+            */
+            /*
+             When MVC framework creates this view model, and populates the properties on this model object, will executes the 
+             validation rules to see if this model is valid or not. You can check the state of your model by checking the 
+             property which is inherited from base controller class.
+             */
+            if (ModelState.IsValid)
+            {
+                // if the IsValid flag is true, all of the data annotations have passed and the Restaurant is in a good state.
+                var newRestaurant = new Restaurant();
+                newRestaurant.Name = Model.Name;
+                newRestaurant.Cuisine = Model.Cuisine;
+                newRestaurant = _restaurantData.Add(newRestaurant);
+                // Telling the browser to go to some other URL and issue a get request from there.
+                // Goes to Details action of Home controller which tells the browser to issue a get request from that URL
+                // The second argument is the Route values that are passed to that Action. Bellow, would be similar to /Home/Details/4
+                return RedirectToAction("Details", new { id = newRestaurant.Id });
+            }
+             // if validation fails, return that Create View again and represent that form and allow the user to fix any user that might have occurred.   
+            return View();
         }
     }
 }

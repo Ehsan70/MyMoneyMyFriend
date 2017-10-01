@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Routing;
 using MyMoneyMyFriend.Services;
+using MyMoneyMyFriend.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyMoneyMyFriend
 {
@@ -40,9 +42,15 @@ namespace MyMoneyMyFriend
             // AddSinglton means there should be one instance of this class for the entire application. 
             // So every method and component that needs an IGreeter will add this object injected.
             services.AddSingleton<IGreeter, Greeter>();
-            // One instance of this service will be created for each HTTP request. 
-            // So for a single HTTP request if multiple pieces of the application need IRestaurantData, they'll see the same object. 
-            services.AddScoped<IRestaurantData, InMemoryRestaurantData>();
+            // SqlRestaurantData is injected into components, controllers and other that request SqlRestaurantData. 
+            services.AddScoped<IRestaurantData, SqlRestaurantData>();
+            // Will get the connectionString wit hthe name MyMoenyMyFriend from the appsetting.json
+            services.AddDbContext<MyMoneyMyFriendDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyMoenyMyFriend")));
+            /*
+            DbContextOptionsBuilder op = new DbContextOptionsBuilder();
+            op.UseSqlServer(Configuration.GetConnectionString("MyMoenyMyFriend"));
+            services.AddDbContext<MyMoneyMyFriendDbContext>(op);
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline. HTTP processing pipeline is configured here. 
