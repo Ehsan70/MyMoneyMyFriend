@@ -45,7 +45,7 @@ namespace MyMoneyMyFriend
             // SqlRestaurantData is injected into components, controllers and other that request SqlRestaurantData. 
             services.AddScoped<IRestaurantData, SqlRestaurantData>();
             // Will get the connectionString wit hthe name MyMoenyMyFriend from the appsetting.json
-            services.AddDbContext<MyMoneyMyFriendDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyMoenyMyFriend")));
+            services.AddDbContext<MyMoneyMyFriendDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyMoneyMyFriend")));
             /*
             DbContextOptionsBuilder op = new DbContextOptionsBuilder();
             op.UseSqlServer(Configuration.GetConnectionString("MyMoenyMyFriend"));
