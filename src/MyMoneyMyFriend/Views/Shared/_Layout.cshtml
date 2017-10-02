@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*View bag is dynamic datastructure and you can add any property or any data into the view bag. 
+        It is a mechanism to pass along information from the content view to the layout view.*@
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @*When MVC controller action is rendering a view (Index view for example) and Layout 
+            view is involved the view and all of its HTML it produces will be places here. *@
+        @RenderBody()
+    </div>
+    <footer>
+        @*Used when content view needs to output markup into layout view. By default everything that is in CSHTMl will appear in where RenderBody is.
+            For example, y default everything in index.cshtml will appear where RenderBody is invoked. *@
+
+        @*Bellow will render the footer section of the content view here*@
+        @RenderSection("footer", required: false)
+        Year = @DateTime.Now.Year
+    </footer>
+</body>
+</html>
