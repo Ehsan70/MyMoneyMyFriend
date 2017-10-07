@@ -1,6 +1,10 @@
 ﻿@using MyMoneyMyFriend.Controllers
 @model MyMoneyMyFriend.Entities.Restaurant
 
+
+@{
+    ViewBag.Title = Model.Name;
+}
 <h1>@Model.Name</h1>
 <div>... Details ...</div>
 <div>
@@ -9,9 +13,7 @@
 <div>
     Cuisine: @Model.Cuisine 
 </div>
-
 <div>
     @*The below will make sure that if the name of the method changes*@
     @Html.ActionLink("Home", nameof(HomeController.Index));
 </div>
-
