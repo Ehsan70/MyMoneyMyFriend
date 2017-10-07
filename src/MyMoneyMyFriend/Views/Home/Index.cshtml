@@ -9,13 +9,17 @@
     // Tthis is executetd before layout view is rendered. This information is pass out to layout view. Note tthis propertty is dynamic.
     ViewBag.Title = "Home";
 }
+@*Some tag helpers are elements. Examples are cache and environment*@
+<environment names="Development">You are in development</environment>
+<environment names="Production">You are in Production</environment>
 
 <h1>Welcome!</h1>
 <table border="1">
     <tr>
         <td>Id of the restaurant</td>
-        <td>Details 1</td>
-        <td>Details 2</td>
+        <td>Details 1 - Using Simple</td>
+        <td>Details 2 - Using ActionLink</td>
+        <td>Details 3 - Using Tag Helpers</td>
         <td>Name of the restaurant</td>
     </tr>
     @foreach (var resaurant in Model.Restaurants)
@@ -23,22 +27,24 @@
         <tr>
             <td>@resaurant.Id</td>
             <td>
-                <a href="/home/details/@resaurant.Id">details</a>
+                <a href="/home/details/@resaurant.Id">Details</a>
             </td>
             <td>
-                @* You pass some params and it's going to build an anchor tag with href attribute.
-                    ActionLink will consult with the routing rule to generate the proper link
-                    1st Arg: The text to show to the user
-                    2ed Arg: the action which this link points to when user clicks on it.
-                    3ed Arg: Controller name: you could skip this as Details is in the same controller
-                    4th Arg: Details requires ID value (route value) to arrive in the URL, the route values are passed here
-                *@
-                @Html.ActionLink("View", "Details", "Home", new { id = resaurant.Id })
+                @Html.ActionLink("Details", "Details", "Home", new { id = resaurant.Id })
+            </td>
+            <td>
+                @*Details page accepts a parameter called id. so asp-route-<param> is used to pass the value. i.e. asp-route-id*@
+                <a asp-action="Details" asp-route-id="@resaurant.Id">Details</a>
             </td>
             <td>@resaurant.Name</td>
         </tr>
     }
 </table>
+
+@* The href attribute are generated on the server side on not on the client and manipulated by Java script.
+    Bellow is essentially telling the Razor view engine to set the href attribute of the anchor tag to build a URL that
+    goes to create action of the home controller *@
+<a asp-controller="Home" asp-action="Create">Create</a>
 
 @section footer {
      <!--Razer view engine will take this section and put it inside of a RenderSection with name `footer`-->
