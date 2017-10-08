@@ -13,6 +13,7 @@ namespace MyMoneyMyFriend.Services
         ///  Returns a restaurant and takes the new restaurant to add to the data  
         /// </summary>
         Restaurant Add(Restaurant newRestaurant);
+        void Commit();
     }
 
     public class SqlRestaurantData : IRestaurantData
@@ -29,15 +30,18 @@ namespace MyMoneyMyFriend.Services
         { 
             // DbContext is smart enough to figure out that this is Restaurant object and figure out which table it goes to.
             _context.Add(newRestaurant);
-            // A better practice would be to have separate functions which would save all the 
-            // changes (in single transaction) instead of saving it for just one addition 
-            _context.SaveChanges();
             /*
              * Note that with the InMemoryRestaurantData, we had to generate ID ourself. But with the SQL restaurant data 
              * SQL server will take care of generating Id, and Entity framework will grab that Id and assigning it restaurant.
              */
             return newRestaurant;
         }
+
+        public void Commit()
+        {
+            // Now saving can be done for aggregated list pf changes 
+            _context.SaveChanges();
+        } 
 
         public Restaurant Get(int id)
         {
@@ -79,6 +83,11 @@ namespace MyMoneyMyFriend.Services
             _restaurants.Add(newRestaurant);
 
             return newRestaurant;
+        }
+
+        public void Commit()
+        {
+            // ... No op
         }
 
         public Restaurant Get(int id)

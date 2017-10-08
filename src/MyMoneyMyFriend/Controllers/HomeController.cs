@@ -52,6 +52,44 @@ namespace MyMoneyMyFriend.Controllers
             return View(model); 
         }
 
+        // This action only responds to get
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var model = _restaurantData.Get(id);
+            if (model == null)
+            {
+                // If the restaurant with the id is not found redirect the user to index action
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+        // To handle when user clicks on the save button in the edit view
+        // We typically need an input model that will only receive the data expect user to give us.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, RestaurantEditViewModel model)
+        {
+            var restaurant = _restaurantData.Get(id);
+
+            if (ModelState.IsValid)
+            {
+                restaurant.Name = model.Name;
+                restaurant.Cuisine = model.Cuisine;
+                /* 
+                 * Save the restaurant to database. The Entity Framework knows that I pulled a particular restaurant out of the table and placed
+                 * it into an object and when I call commit (winch calls save changed in the entity framework), the framework can detect which 
+                 * objects have had their data modified. therefore, Entity framework will generate an update statement to update the record in 
+                 * the restaurants table of my database to make sure that change is persisted 
+                */
+                _restaurantData.Commit();
+                // IF everything was successful redirect the user to the details view of that restaurant 
+                return RedirectToAction("Details", new { id = restaurant.Id}); 
+            }
+            return View(restaurant);
+        }
+
         // Restricts this version of Create to only respond to HTTP Get request. 
         // That is the type of the request that will be issues with the user goes to /home/create URL
         [HttpGet]
@@ -88,9 +126,8 @@ namespace MyMoneyMyFriend.Controllers
                 newRestaurant.Name = Model.Name;
                 newRestaurant.Cuisine = Model.Cuisine;
                 newRestaurant = _restaurantData.Add(newRestaurant);
-                // Telling the browser to go to some other URL and issue a get request from there.
-                // Goes to Details action of Home controller which tells the browser to issue a get request from that URL
-                // The second argument is the Route values that are passed to that Action. Bellow, would be similar to /Home/Details/4
+                // Now you have explicitly save the changes 
+                _restaurantData.Commit();
                 return RedirectToAction("Details", new { id = newRestaurant.Id });
             }
              // if validation fails, return that Create View again and represent that form and allow the user to fix any user that might have occurred.   

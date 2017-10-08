@@ -21,6 +21,7 @@
         <td>Details 2 - Using ActionLink</td>
         <td>Details 3 - Using Tag Helpers</td>
         <td>Name of the restaurant</td>
+        <td>Edit</td>
     </tr>
     @foreach (var resaurant in Model.Restaurants)
     {
@@ -37,6 +38,8 @@
                 <a asp-action="Details" asp-route-id="@resaurant.Id">Details</a>
             </td>
             <td>@resaurant.Name</td>
+            @*Create s link that points to edit action*@
+            <td><a asp-action="Edit" asp-route-id="@resaurant.Id">Edit</a></td>
         </tr>
     }
 </table>

@@ -1,0 +1,34 @@
+﻿@model Restaurant
+
+@{
+    ViewBag.Title = $"Edit {Model.Name}";
+}
+
+<div>
+    <h1>Editing @Model.Name</h1>
+    <div>
+        @*Difference between HTMl.BeginForm helper and plain form is that you need to set asp-antiforgery 
+            to true to make sure anti-forgery token is generated into this form.*@
+        <form method="post" asp-antiforgery="true">
+                <div>
+                    @*Bellow is saying this is for name property of the model. LabelFor (Html.LabelFor(m => m.Name)) and bellow are doing similar.
+                        Remember this is server side processing. They are executed as razor view is rendering the HTML.*@
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name"/>
+                    <span asp-validation-for="Name"></span>
+                    @*Html helpers are C# expressions, Although they produce Html they do not look like html. Tag helpers blend well with html*@
+                </div>
+
+                <div>
+                    <label asp-for="Cuisine"></label>
+                    @* using the asp-items you could specify the lists that can be used to generate the option listt*@
+                    <select asp-for="Cuisine" asp-items="@Html.GetEnumSelectList(typeof(CuisineType))">
+                    </select>
+                    <span asp-validation-for="Cuisine"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Save!" />
+                </div>
+        </form>
+    </div>
+</div>
