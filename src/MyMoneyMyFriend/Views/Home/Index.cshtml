@@ -14,6 +14,21 @@
 <environment names="Production">You are in Production</environment>
 
 <h1>Welcome!</h1>
+<hr>
+<h2>Restaurant info using Divs</h2>
+<p>Note that Index.cshtml is now simplified because some of the works is delegated to _summary.cshtml</p>
+@foreach (var restaurant in Model.Restaurants)
+{
+    // For each restaurant render a partial view. 
+    
+    @Html.Partial("_Summary", restaurant);
+}
+<div>
+    <a asp-action="Create">Create</a>
+</div>
+
+<hr>
+<h2>Restaurant info using Tables</h2>
 <table border="1">
     <tr>
         <td>Id of the restaurant</td>
@@ -48,7 +63,7 @@
     Bellow is essentially telling the Razor view engine to set the href attribute of the anchor tag to build a URL that
     goes to create action of the home controller *@
 <a asp-controller="Home" asp-action="Create">Create</a>
-
+<hr>
 @section footer {
      <!--Razer view engine will take this section and put it inside of a RenderSection with name `footer`-->
 <h3>@Model.CurrentMessage</h3>
