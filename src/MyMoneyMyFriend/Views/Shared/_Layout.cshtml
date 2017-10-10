@@ -15,12 +15,21 @@
         @RenderBody()
     </div>
     <footer>
+        <hr><hr>    
+        <h5>Rendering footer section if the cshtml file has it</h5>
         @*Used when content view needs to output markup into layout view. By default everything that is in CSHTMl will appear in where RenderBody is.
             For example, y default everything in index.cshtml will appear where RenderBody is invoked. *@
 
         @*Bellow will render the footer section of the content view here*@
         @RenderSection("footer", required: false)
-        Year = @DateTime.Now.Year
+        <hr>
+        <h5>USing ViewComponent to show a message for each page</h5>
+        @*Naming conventions matter here. MVC framework will be looking for a class called GreetingViewComponent.*@
+        @*InvokeAsync return a Task of HTML content. razor doesnt know what to do with this object, so it called a toString on that object. 
+            And if you call ToString() you get the object type. 
+          To solve this, we need to unwrap the HTML content from the task, and put the content into the view. 
+            To do this, we need to await the result. *@
+        @await Component.InvokeAsync("Greeting")
     </footer>
 </body>
 </html>
