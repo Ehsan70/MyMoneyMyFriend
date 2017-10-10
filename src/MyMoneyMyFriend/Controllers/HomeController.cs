@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMoneyMyFriend.Entities;
 using MyMoneyMyFriend.Services;
 using MyMoneyMyFriend.ViewModels;
 
 namespace MyMoneyMyFriend.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private IGreeter _greeter;
@@ -22,6 +24,7 @@ namespace MyMoneyMyFriend.Controllers
             _greeter = greeter;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var model = new HomePageViewModel();
