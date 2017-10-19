@@ -7,6 +7,7 @@ using MyMoneyMyFriend.ViewModels;
 namespace MyMoneyMyFriend.Controllers
 {
     [Authorize]
+    // This will make all the actions to be called by an authorized user except the one that dont have AllowAnonymous like Index(). 
     public class HomeController : Controller
     {
         private IGreeter _greeter;

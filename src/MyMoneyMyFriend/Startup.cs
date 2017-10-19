@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Routing;
 using MyMoneyMyFriend.Services;
 using MyMoneyMyFriend.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MyMoneyMyFriend
 {
@@ -51,6 +52,12 @@ namespace MyMoneyMyFriend
             op.UseSqlServer(Configuration.GetConnectionString("MyMoenyMyFriend"));
             services.AddDbContext<MyMoneyMyFriendDbContext>(op);
             */
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MyMoneyMyFriendDbContext>();
+            /*
+             * Type of the user you have is passed along with the type of the Role we want to use. We are using the generic role, though you could customize this. 
+             * AddEntityFrameworkStores is telling the type of the DbContext that framework will use to store information and lookup password. 
+             * So we have injected Identity framework services so that we can manage users and sign-in attempts 
+             */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline. HTTP processing pipeline is configured here. 
@@ -85,6 +92,9 @@ namespace MyMoneyMyFriend
 
             //app.UseMvcWithDefaultRoute(); // Bellow middleware looks for an incoming http request and tries to map that request to a method on C# class. So MVC framework will instantiate that class and invoke a method. 
 
+            // Identity middleware needs to come before MVC framework. So that Identity framework has a chance to turn cookies to users and process 401 requests successfully. 
+            // If you move this after UseMvc the identity will never get a chance to authenticate the users. 
+            app.UseIdentity();
 
             // Bellow will install MVC middleware but will not give any routing rules
             app.UseMvc(ConfigureRoutes);
