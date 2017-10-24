@@ -8,9 +8,10 @@ using MyMoneyMyFriend.Entities;
 namespace MyMoneyMyFriend.Migrations
 {
     [DbContext(typeof(MyMoneyMyFriendDbContext))]
-    partial class MyMoneyMyFriendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171024044321_Identity")]
+    partial class Identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
