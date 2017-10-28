@@ -1,0 +1,39 @@
+﻿@model RegisterUserViewModel
+
+@{ 
+    ViewBag.Title = "Register";
+}
+
+<h1>Register</h1>
+
+
+<!--This form will post to a web sever. Also making sure that Anti forgery token is generated here-->
+<form method="post" asp-antiforgery="true">
+
+    <!--Providing space for showing errors that may appear.
+        ModelOnly are errors that are not associated with a single property. Something like not being able to confirm passwords-->
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <!-- You don't have to worry about setting the type of the input to password. Asp-for tag will see the 
+            data annotations on this view model property and sets the type appropriately -->
+        <label asp-for="Username"> </label>
+        <input asp-for="Username" />
+        <span asp-validation-for="Username"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"> </label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div>
+        <label asp-for="ConfirmPassword"> </label>
+        <input asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+
+    <div>
+        <input type="submit" value="Register" />
+    </div>
+</form>
