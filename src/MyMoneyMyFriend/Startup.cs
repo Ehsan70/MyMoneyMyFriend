@@ -88,10 +88,14 @@ namespace MyMoneyMyFriend
             /////////////////////// Static Files Middleware /////////////////////// 
             // app.UseDefaultFiles(); // Look at the incoming requests and sees if there is a default file that matches that request. Default File names : Index.html, etc 
             // app.UseStaticFiles(); // By default it will look for files on the file system in the web root folder
-            app.UseFileServer(); // his combines both of UseStaticFiles and UseDefaultFiles. You have directory browsing
+            // This middle ware serves the file that are inside the wwwroot. You could have 2 FileServer that serve files from 2 different directories. You could pass in the path to the folder that you want to serve. 
+            app.UseFileServer(); // This combines both of UseStaticFiles and UseDefaultFiles. You have directory browsing
 
+            // Bellow is an extension to IApplciaitonBuilder
+            app.UseNodeModules(env.ContentRootPath);
+            
             //app.UseMvcWithDefaultRoute(); // Bellow middleware looks for an incoming http request and tries to map that request to a method on C# class. So MVC framework will instantiate that class and invoke a method. 
-
+ 
             // Identity middleware needs to come before MVC framework. So that Identity framework has a chance to turn cookies to users and process 401 requests successfully. 
             // If you move this after UseMvc the identity will never get a chance to authenticate the users. 
             app.UseIdentity();

@@ -44,7 +44,7 @@ namespace MyMoneyMyFriend.Controllers
             if (ModelState.IsValid)
             {
                 // if state is valid create the user. 
-                var user = new User { UserName = model.Username};
+                var user = new User { UserName = model.Username };
                 /*
                  This is async method. For async methods the return type is wrapped in a task.
                  The await keyword, waits for the result of another async method.
@@ -53,8 +53,8 @@ namespace MyMoneyMyFriend.Controllers
                 if (createResult.Succeeded)
                 {
                     // When isPersistant set to true: Sign in manager will issue a cookie to browser. 
-                        // That cookies will an authentication ticket that browser sends back on every subsequent request. 
-                        // The cookie is persistent meaning will not go away when the user does not closes the browser. 
+                    // That cookies will an authentication ticket that browser sends back on every subsequent request. 
+                    // The cookie is persistent meaning will not go away when the user does not closes the browser. 
                     // When isPersistant set to false: Will create a session cookie and therefore goes away when the user closes the browser. 
                     await _signInmanager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
@@ -67,13 +67,61 @@ namespace MyMoneyMyFriend.Controllers
                          * The above will associate the error with a specific property (in this case Username) on the model for the view.
                          * And therefore it will show up in the validation that is associated with the thatt property (Username in this case)
                          */
-                         // Bellow, we don't want the error to be associated with a specific key. So the key is blank
+                        // Bellow, we don't want the error to be associated with a specific key. So the key is blank
                         ModelState.AddModelError("", error.Description);
                     }
                 }
 
             }
             //if not valid state, return the same register view 
+            return View();
+        }
+
+        // Note that all of identity framework methods are asynchronous 
+        [HttpPost, AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            // The bellow will remove the authentication cookie from users browser.
+            await _signInmanager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Responds to get requests and present the user with login form
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+
+        // Responds to post requests, validates the form inputs and potentially signs in the user first
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // The var below is of type Microsoft.AspNetCore.Identity.SignInResult
+                var loginResult = await _signInmanager.PasswordSignInAsync(model.Username, model.Password,
+                    model.RememberMe, false);
+                if (loginResult.Succeeded)
+                {
+                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        // This check is required to make sure you don't have a security problem in the application with open redirects. This helps prevent open redirects
+                        // If you have the url, you can use Redirect instead of RedirectToAction
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                // Note that LoginResult (unlike CreateResult) does not have errors collection. 
+                // Instead it has some flags about if the user is locked out or is not allowed, confirming emails etc
+            }
+            // Bellow could appear, if the user enters wrong user name or wrong password.  Remember this is not associated to any property.
+            ModelState.AddModelError("", "Could not login");
+            // if could not succeed, it will return the login view again with the above login error 
             return View();
         }
     }

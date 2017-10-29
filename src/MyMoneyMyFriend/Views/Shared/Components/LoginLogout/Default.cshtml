@@ -1,0 +1,22 @@
+﻿@*Note that a User property is available inside of every view.*@
+
+@if (User.Identity.IsAuthenticated)
+{
+    // If the user is signed in display this UI
+    // Noe that User.Identity.Name is not the friendly name, it is the username.     
+    <span>Hello , @User.Identity.Name </span>
+    <form method="post" asp-controller="Account" asp-action="Logout" asp-antiforgery="true">
+        <input class="btn btn-default" type="submit" value="Logout"/>
+    </form>
+}
+else
+{
+    // If the user is not signed in display this UI
+    <a class="btn btn-default" asp-controller="Account" asp-action="Register">Register</a>
+    <a class="btn btn-default" asp-controller="Account" asp-action="Login">Login</a>
+
+}
+
+
+
+
