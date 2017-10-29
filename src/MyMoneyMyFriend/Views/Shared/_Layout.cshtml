@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    @*View bag is dynamic datastructure and you can add any property or any data into the view bag. 
+    @*View bag is dynamic datastructure and you can add any property or any data into the view bag.
         It is a mechanism to pass along information from the content view to the layout view.*@
 
     <title>@ViewBag.Title</title>
@@ -25,14 +25,14 @@
         </div>
     </nav>
     <div class="container">
-        @*When MVC controller action is rendering a view (Index view for example) and Layout 
+        @*When MVC controller action is rendering a view (Index view for example) and Layout
             view is involved the view and all of its HTML it produces will be places here. *@
         @RenderBody()
         <footer>
             <hr><hr>
             <h5>Rendering footer section if the cshtml file has it</h5>
             @*Used when content view needs to output markup into layout view. By default everything that is in CSHTMl will appear in where RenderBody is.
-            For example, y default everything in index.cshtml will appear where RenderBody is invoked. *@
+                For example, y default everything in index.cshtml will appear where RenderBody is invoked. *@
 
             @*Bellow will render the footer section of the content view here*@
             @RenderSection("footer", required: false)
@@ -40,12 +40,14 @@
             <h5>USing ViewComponent to show a message for each page</h5>
             @*Naming conventions matter here. MVC framework will be looking for a class called GreetingViewComponent.*@
             @*InvokeAsync return a Task of HTML content. razor doesnt know what to do with this object, so it called a toString on that object.
-              And if you call ToString() you get the object type.
-            To solve this, we need to unwrap the HTML content from the task, and put the content into the view.
-              To do this, we need to await the result. *@
+                  And if you call ToString() you get the object type.
+                To solve this, we need to unwrap the HTML content from the task, and put the content into the view.
+                  To do this, we need to await the result. *@
             @await Component.InvokeAsync("Greeting")
         </footer>
     </div>
-   
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="/node_modules/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 </body>
 </html>

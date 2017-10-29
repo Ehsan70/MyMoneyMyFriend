@@ -103,8 +103,8 @@ namespace MyMoneyMyFriend
             // Bellow will install MVC middleware but will not give any routing rules
             app.UseMvc(ConfigureRoutes);
 
-            // If the MVC middleware doesn't find a match, it will let the request to go through the next middleware
-            app.Run(ctx => ctx.Response.WriteAsync("Not Found"));
+            // Bellow is temporary disabled to make sure that all scripts are loaded. If a script is not loaded properly you'll get 404 
+            //app.Run(ctx => ctx.Response.WriteAsync("Not Found"));
         }
 
         private void ConfigureRoutes(IRouteBuilder routeBuilder)
